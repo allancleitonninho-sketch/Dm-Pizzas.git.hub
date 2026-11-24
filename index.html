@@ -1,0 +1,647 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DM Pizzas | Cardápio</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    background: #a90000;
+    color: #ffdf00;
+}
+
+header {
+    background: #650000;
+    padding: 20px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    border-bottom: 3px solid #ffdf00;
+}
+
+.logo {
+    font-size: 32px;
+    font-weight: 900;
+    text-shadow: 3px 3px #300000;
+}
+
+nav {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+nav a {
+    color: #ffdf00;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav a:hover { color: white; }
+
+.hero {
+    padding: 75px 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 35px;
+    background: linear-gradient(120deg, #e00000, #650000);
+}
+
+.hero-text { max-width: 500px; }
+
+.hero h1 {
+    font-size: clamp(45px, 7vw, 75px);
+    text-shadow: 4px 4px #550000;
+}
+
+.hero p {
+    color: white;
+    font-size: 19px;
+    line-height: 1.6;
+    margin: 15px 0 25px;
+}
+
+.hero img {
+    width: min(48%, 480px);
+    height: 300px;
+    object-fit: cover;
+    border-radius: 22px;
+    box-shadow: 0 10px 30px #350000;
+}
+
+.botao {
+    display: inline-block;
+    background: #ffdf00;
+    color: #700000;
+    padding: 15px 25px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 900;
+    border: none;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.botao:hover {
+    transform: scale(1.05);
+    background: white;
+}
+
+section { padding: 55px 7%; }
+
+.titulo {
+    text-align: center;
+    font-size: clamp(26px, 4vw, 38px);
+    margin-bottom: 35px;
+}
+
+/* SLIDES */
+
+.carrossel {
+    max-width: 1000px;
+    margin: auto;
+    overflow: hidden;
+    background: #650000;
+    border: 3px solid #ffdf00;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px #400000;
+}
+
+.slides {
+    display: flex;
+    transition: transform .6s ease;
+}
+
+.slide {
+    min-width: 100%;
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 35px;
+}
+
+.pizza {
+    width: 300px;
+    height: 240px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 18px;
+    border: 2px solid #ffdf00;
+    background: #350000;
+}
+
+.pizza img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.info { max-width: 400px; }
+
+.info h3 {
+    font-size: 30px;
+    margin-bottom: 12px;
+}
+
+.preco {
+    color: white;
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.info p {
+    color: #fff0a0;
+    line-height: 1.6;
+}
+
+.controles {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+    padding: 15px;
+}
+
+.controles button {
+    background: #ffdf00;
+    color: #700000;
+    border: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+#contador {
+    color: white;
+    font-weight: bold;
+}
+
+/* CARDÁPIO */
+
+.cardapio { background: #650000; }
+
+.lista {
+    max-width: 1100px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.item {
+    background: linear-gradient(135deg, #bd0000, #800000);
+    border: 1px solid #ffdf00;
+    padding: 20px;
+    border-radius: 13px;
+    transition: .3s;
+}
+
+.item:hover {
+    transform: translateY(-4px);
+    background: #d00000;
+}
+
+.item h3 {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.item h3 span { white-space: nowrap; }
+
+.item p {
+    color: #fff0a0;
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+.aviso {
+    text-align: center;
+    color: white;
+    margin-top: 30px;
+    line-height: 1.8;
+    font-weight: bold;
+}
+
+/* PEDIDOS */
+
+.pedido {
+    max-width: 650px;
+    margin: auto;
+    background: #650000;
+    border: 2px solid #ffdf00;
+    border-radius: 20px;
+    padding: 30px;
+}
+
+.pedido label {
+    display: block;
+    color: #ffdf00;
+    font-weight: bold;
+    margin: 18px 0 8px;
+}
+
+.pedido select {
+    width: 100%;
+    padding: 14px;
+    border-radius: 8px;
+    border: 2px solid #ffdf00;
+    background: white;
+    color: #500000;
+    font-size: 16px;
+}
+
+.pedido .botao {
+    width: 100%;
+    margin-top: 25px;
+    font-size: 16px;
+}
+
+.observacao {
+    color: #fff0a0;
+    font-size: 13px;
+    margin-top: 12px;
+    line-height: 1.5;
+}
+
+footer {
+    background: #400000;
+    padding: 25px;
+    text-align: center;
+}
+
+/* CELULAR */
+
+@media(max-width: 700px) {
+    header {
+        justify-content: center;
+        text-align: center;
+    }
+
+    nav { justify-content: center; }
+
+    .hero {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero img {
+        width: 100%;
+        height: 230px;
+    }
+
+    .slide {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .pizza {
+        width: 100%;
+        max-width: 350px;
+        height: 220px;
+    }
+
+    .lista { grid-template-columns: 1fr; }
+
+    .pedido { padding: 20px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">🍕 DM PIZZAS</div>
+    <nav>
+        <a href="#inicio">Início</a>
+        <a href="#sabores">Sabores</a>
+        <a href="#cardapio">Cardápio</a>
+        <a href="#pedido">Pedir</a>
+    </nav>
+</header>
+
+<section class="hero" id="inicio">
+    <div class="hero-text">
+        <h1>DM PIZZAS</h1>
+        <p>O sabor que conquista em cada pedaço! Conheça nossos sabores.</p>
+        <a href="#cardapio" class="botao">VER CARDÁPIO</a>
+    </div>
+
+    <img
+        src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=900"
+        alt="Pizza da DM Pizzas">
+</section>
+
+<section id="sabores">
+    <h2 class="titulo">NOSSOS SABORES 🍕</h2>
+
+    <div class="carrossel">
+        <div class="slides" id="slides">
+
+            <div class="slide">
+                <div class="pizza">
+                    <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=700" alt="Pizza de frango com catupiry">
+                </div>
+                <div class="info">
+                    <h3>Frango com Catupiry</h3>
+                    <div class="preco">R$ 23,00</div>
+                    <p>Mussarela, frango, catupiry e azeitona.</p>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="pizza">
+                    <img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=700" alt="Pizza de calabresa">
+                </div>
+                <div class="info">
+                    <h3>Calabresa</h3>
+                    <div class="preco">R$ 23,00</div>
+                    <p>Mussarela, calabresa, cebola e orégano.</p>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="pizza">
+                    <img src="https://images.unsplash.com/photo-1579751626657-72bc17010498?w=700" alt="Pizza de milho">
+                </div>
+                <div class="info">
+                    <h3>Milho</h3>
+                    <div class="preco">R$ 23,00</div>
+                    <p>Mussarela, milho, orégano e azeitona.</p>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="pizza">
+                    <img src="https://images.unsplash.com/photo-1604382355076-af4b0eb60143?w=700" alt="Pizza de dois queijos">
+                </div>
+                <div class="info">
+                    <h3>2 Queijos</h3>
+                    <div class="preco">R$ 23,00</div>
+                    <p>Mussarela, provolone, orégano e azeitona.</p>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="pizza">
+                    <img src="https://images.unsplash.com/photo-1594007654729-407eedc4be65?w=700" alt="Pizza de presunto">
+                </div>
+                <div class="info">
+                    <h3>Presunto</h3>
+                    <div class="preco">R$ 23,00</div>
+                    <p>Mussarela, presunto, orégano e azeitona.</p>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="pizza">
+                    <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=700" alt="Pizza de atum">
+                </div>
+                <div class="info">
+                    <h3>Atum</h3>
+                    <div class="preco">R$ 28,00</div>
+                    <p>Mussarela, atum, cebola, azeitona e orégano.</p>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="pizza">
+                    <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=700" alt="Pizza de bacon">
+                </div>
+                <div class="info">
+                    <h3>Bacon</h3>
+                    <div class="preco">R$ 28,00</div>
+                    <p>Mussarela, bacon, cebola, azeitona e orégano.</p>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="pizza">
+                    <img src="https://images.unsplash.com/photo-1604382355076-af4b0eb60143?w=700" alt="Pizza quatro queijos">
+                </div>
+                <div class="info">
+                    <h3>4 Queijos</h3>
+                    <div class="preco">R$ 28,00</div>
+                    <p>Mussarela, provolone, parmesão, requeijão cremoso, azeitona e orégano.</p>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="pizza">
+                    <img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=700" alt="Pizza calabresa barbecue">
+                </div>
+                <div class="info">
+                    <h3>Calabresa c/ Barbecue</h3>
+                    <div class="preco">R$ 28,00</div>
+                    <p>Calabresa com barbecue.</p>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="pizza">
+                    <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=700" alt="Pizza de lombinho">
+                </div>
+                <div class="info">
+                    <h3>Lombinho</h3>
+                    <div class="preco">R$ 28,00</div>
+                    <p>Mussarela, lombinho, orégano e azeitona.</p>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="pizza">
+                    <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=700" alt="Pizza portuguesa">
+                </div>
+                <div class="info">
+                    <h3>Portuguesa</h3>
+                    <div class="preco">R$ 28,00</div>
+                    <p>Mussarela, ovo, milho, tomate, cebola, orégano e azeitona.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="controles">
+            <button onclick="mudar(-1)">‹</button>
+            <span id="contador">1 / 11</span>
+            <button onclick="mudar(1)">›</button>
+        </div>
+    </div>
+</section>
+
+<section class="cardapio" id="cardapio">
+    <h2 class="titulo">PIZZA GRANDE — CARDÁPIO</h2>
+
+    <div class="lista">
+
+        <div class="item">
+            <h3>Frango c/ Catupiry <span>R$ 23</span></h3>
+            <p>Mussarela, frango, catupiry e azeitona.</p>
+        </div>
+
+        <div class="item">
+            <h3>Calabresa <span>R$ 23</span></h3>
+            <p>Mussarela, calabresa, cebola e orégano.</p>
+        </div>
+
+        <div class="item">
+            <h3>Milho <span>R$ 23</span></h3>
+            <p>Mussarela, milho, orégano e azeitona.</p>
+        </div>
+
+        <div class="item">
+            <h3>2 Queijos <span>R$ 23</span></h3>
+            <p>Mussarela, provolone, orégano e azeitona.</p>
+        </div>
+
+        <div class="item">
+            <h3>Presunto <span>R$ 23</span></h3>
+            <p>Mussarela, presunto, orégano e azeitona.</p>
+        </div>
+
+        <div class="item">
+            <h3>Atum <span>R$ 28</span></h3>
+            <p>Mussarela, atum, cebola, azeitona e orégano.</p>
+        </div>
+
+        <div class="item">
+            <h3>Bacon <span>R$ 28</span></h3>
+            <p>Mussarela, bacon, cebola, azeitona e orégano.</p>
+        </div>
+
+        <div class="item">
+            <h3>4 Queijos <span>R$ 28</span></h3>
+            <p>Mussarela, provolone, parmesão, requeijão cremoso, azeitona e orégano.</p>
+        </div>
+
+        <div class="item">
+            <h3>Calabresa c/ Barbecue <span>R$ 28</span></h3>
+            <p>Calabresa com barbecue.</p>
+        </div>
+
+        <div class="item">
+            <h3>Lombinho <span>R$ 28</span></h3>
+            <p>Mussarela, lombinho, orégano e azeitona.</p>
+        </div>
+
+        <div class="item">
+            <h3>Portuguesa <span>R$ 28</span></h3>
+            <p>Mussarela, ovo, milho, tomate, cebola, orégano e azeitona.</p>
+        </div>
+
+    </div>
+
+    <div class="aviso">
+        PIZZA GRANDE • 8 FATIAS • 2 SABORES<br>
+        Pagamentos via cartão acrescentam R$ 1,00 de taxa.
+    </div>
+</section>
+
+<section id="pedido">
+    <h2 class="titulo">FAÇA SEU PEDIDO 🍕</h2>
+
+    <div class="pedido">
+
+        <label for="sabor">Escolha o sabor:</label>
+        <select id="sabor">
+            <option>Frango com Catupiry</option>
+            <option>Calabresa</option>
+            <option>Milho</option>
+            <option>2 Queijos</option>
+            <option>Presunto</option>
+            <option>Atum</option>
+            <option>Bacon</option>
+            <option>4 Queijos</option>
+            <option>Calabresa com Barbecue</option>
+            <option>Lombinho</option>
+            <option>Portuguesa</option>
+        </select>
+
+        <label for="refrigerante">Deseja refrigerante?</label>
+        <select id="refrigerante">
+            <option>Sem refrigerante</option>
+            <option>Com refrigerante</option>
+        </select>
+
+        <label for="pagamento">Forma de pagamento:</label>
+        <select id="pagamento">
+            <option>Pix</option>
+            <option>Dinheiro</option>
+            <option>Cartão (+ R$ 1,00 de taxa)</option>
+        </select>
+
+        <button class="botao" onclick="enviarPedido()">
+            PEDIR PELO WHATSAPP
+        </button>
+
+        <p class="observacao">
+            O preço do refrigerante será confirmado pela pizzaria.
+            O pedido será enviado ao WhatsApp para confirmação.
+        </p>
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 DM Pizzas — Todos os direitos reservados.</p>
+</footer>
+
+<script>
+const slides = document.getElementById("slides");
+const contador = document.getElementById("contador");
+const total = slides.children.length;
+
+let atual = 0;
+
+function mostrar() {
+    slides.style.transform = `translateX(-${atual * 100}%)`;
+    contador.textContent = `${atual + 1} / ${total}`;
+}
+
+function mudar(direcao) {
+    atual = (atual + direcao + total) % total;
+    mostrar();
+}
+
+setInterval(() => mudar(1), 4000);
+
+function enviarPedido() {
+    const sabor = document.getElementById("sabor").value;
+    const refrigerante = document.getElementById("refrigerante").value;
+    const pagamento = document.getElementById("pagamento").value;
+
+    const mensagem =
+        "Olá! Quero fazer um pedido na DM Pizzas.\n\n" +
+        "Sabor: " + sabor + "\n" +
+        "Refrigerante: " + refrigerante + "\n" +
+        "Pagamento: " + pagamento + "\n\n" +
+        "Gostaria de confirmar meu pedido!";
+
+    const url = "https://wa.me/557191287033?text=" +
+        encodeURIComponent(mensagem);
+
+    window.open(url, "_blank");
+}
+</script>
+
+</body>
+</html>
